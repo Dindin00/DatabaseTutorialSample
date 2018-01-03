@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
         database = openOrCreateDatabase("test.db", MODE_PRIVATE, null);
         //利用execSQL執行SQL的DDL及部分DML指令
         //透過if not exists只要已經有該資料表存在就不會重複創建
-        database.execSQL("create table if not exists students(id integer primary key, name text not null, class text not null)");
+        //主鍵的名稱必須為_id
+        database.execSQL("create table if not exists students(_id integer primary key, name text not null, class text not null)");
         //插入三筆資料
         //注意SQL語法中如果有要採用字串時必須與最外層Android字串包覆的引號不同
         //如本範例外層android的是雙引號，而內部SQL語法為單引號
@@ -43,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = database.rawQuery("select * from students", null);
         //將查詢結果(cursor)放入Adapter中用以放入ListView顯示
         //第一個參數為要顯示資料的activity的context
-        //第二個參數為ListView中每一列要套用的樣式，本範例採用android預設的樣式，也可自行設計layout
+        //第二個參數為ListView中每一列要套用的樣式，本範例採用android預設的雙列樣式，也可自行設計layout
         //第三個參數為要用來顯示的SQL查詢結果
         //第四個參數為要顯示的欄位名稱
         //第五個參數為要在每一列的哪個預設位置顯示，若自行設定layout則採用R.id.xxx即可
         //第六個參數用於監聽特殊處理之用，若不需使用輸入0即可
-        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(MainActivity.this, android.R.layout.simple_list_item_1, cursor, new String[]{"name", "class"}, new int[]{android.R.id.text1, android.R.id.text2}, 0);
+        SimpleCursorAdapter cursorAdapter = new SimpleCursorAdapter(MainActivity.this, android.R.layout.simple_list_item_2, cursor, new String[]{"name", "class"}, new int[]{android.R.id.text1, android.R.id.text2}, 0);
         //ListView初始化
         lv_show = (ListView) findViewById(R.id.lv_show);
         //設定ListView的資料內容(Adapter)
